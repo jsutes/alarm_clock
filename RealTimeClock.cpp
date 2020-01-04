@@ -9,11 +9,11 @@ RealTimeClock::RealTimeClock()
 
 void RealTimeClock::setup()
 {
-    rtc.begin();
-    if (!rtc.isrunning()) {
+    rtc_.begin();
+    if (!rtc_.isrunning()) {
         Serial.println("RTC is NOT running!");
         // Following line sets the RTC to the date & time this sketch was compiled
-        // rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+        // rtc_.adjust(DateTime(F(__DATE__), F(__TIME__)));
     } else {
         Serial.println("RTC is okay");
     }
@@ -31,6 +31,13 @@ void RealTimeClock::getHoursMinutes(int& hour, int& minute) const
     hour = t.hour();
     minute = t.minute();
 }
+const int* RealTimeClock::getHoursMinutes()
+{
+    DateTime t = now();
+    hourminute_[0] = t.hour();
+    hourminute_[1] = t.minute();
+    return hourminute_;
+}
 int RealTimeClock::getHours() const
 {
     return now().hour();
@@ -43,13 +50,13 @@ void RealTimeClock::setHours(int hour)
 {
     hour = correctHoursRange(hour);
     DateTime t = now();
-    rtc.adjust(DateTime(t.year(), t.month(), t.day(), hour, t.minute(), t.second()));
+    rtc_.adjust(DateTime(t.year(), t.month(), t.day(), hour, t.minute(), t.second()));
 }
 void RealTimeClock::setMinutes(int minute)
 {
     minute = correctMinutesRange(minute);
     DateTime t = now();
-    rtc.adjust(DateTime(t.year(), t.month(), t.day(), t.hour(), minute, t.second()));
+    rtc_.adjust(DateTime(t.year(), t.month(), t.day(), t.hour(), minute, t.second()));
 }
 
 void RealTimeClock::incrementHours()
@@ -80,5 +87,5 @@ int RealTimeClock::correctMinutesRange(int minute)
 
 DateTime RealTimeClock::now() const
 {
-  return rtc.now();
+  return rtc_.now();
 }

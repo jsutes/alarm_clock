@@ -13,6 +13,7 @@ class RealTimeClock
         void setTime(int hour, int minute);
 
         void getHoursMinutes(int& hour, int& minute) const;
+        const int* getHoursMinutes();
         int getHours() const;
         int getMinutes() const;
 
@@ -28,9 +29,10 @@ class RealTimeClock
         static int correctMinutesRange(int minute);
 
     private:
-        RTC_DS1307 rtc;
+        RTC_DS1307 rtc_;
         const char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
         DateTime now() const;
+        int hourminute_[2];
 
 };
 

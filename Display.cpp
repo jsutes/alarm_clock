@@ -17,6 +17,11 @@ void Display::setTime(int hour, int minute)
     setHours(hour);
     setMinutes(minute);
 }
+void Display::setTime(const int* hourminute)
+{
+    setHours(hourminute[0]);
+    setMinutes(hourminute[1]);
+}
 
 int Display::getHours() const
 {

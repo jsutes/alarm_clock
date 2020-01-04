@@ -10,6 +10,7 @@ class Display
         Display(int clkPin, int dioPin);
 
         void setTime(int hour, int minute);
+        void setTime(const int* hourminute);
 
         int getHours() const;
         int getMinutes() const;
