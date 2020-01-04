@@ -39,10 +39,12 @@ void loop()
     display.setTime(rtc.getHoursMinutes());
 
     if (buttonSetTime.buttonPressed()) {
+        display.startBlinking();
         // Enter a state where the time can be changed by the up/down buttons
         delay(400);
         // Set hours until SetTime button is pressed
         while (!buttonSetTime.buttonPressed()) {
+            display.updateBlink();
             if (buttonUp.buttonPressed()) {
                 Serial.print("Button UP pressed ... ");
                 rtc.incrementHours();
@@ -60,6 +62,7 @@ void loop()
         delay(400);
         // Set minutes until SetTime button is pressed
         while (!buttonSetTime.buttonPressed()) {
+            display.updateBlink();
             if (buttonUp.buttonPressed()) {
                 rtc.incrementMinutes();
                 display.setTime(rtc.getHoursMinutes());
@@ -71,6 +74,7 @@ void loop()
                 delay(400);
             }
         }
+        display.stopBlinking();
         delay(400);
     }
 

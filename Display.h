@@ -23,6 +23,13 @@ class Display
         void incrementMinutes();
         void decrementMinutes();
 
+        void on();
+        void off();
+
+        void startBlinking();
+        void updateBlink();
+        void stopBlinking();
+
         static int correctHoursRange(int hour);
         static int correctMinutesRange(int minute);
 
@@ -30,8 +37,14 @@ class Display
         TM1637Display tm1637_;
         int hour_;
         int minute_;
+        int brightness_;
+        bool on_;
+
+        unsigned long previousBlinkTime_;
+        const int blinkInterval_ = 500;
 
         void updateScreen();
+        void onOffSwitch();
 };
 
 #endif

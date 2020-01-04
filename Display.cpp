@@ -6,10 +6,12 @@
 Display::Display(int clkPin, int dioPin) :
     tm1637_(clkPin, dioPin)
 {
-    tm1637_.clear();
-    tm1637_.setBrightness(7, true);
     hour_ = 0;
     minute_ = 0;
+    brightness_ = 7;
+    on_ = true;
+    tm1637_.clear();
+    tm1637_.setBrightness(brightness_, true);
 }
 
 void Display::setTime(int hour, int minute)
@@ -59,6 +61,38 @@ void Display::decrementMinutes()
     setMinutes(getMinutes() - 1);
 }
 
+void Display::on()
+{
+    on_ = true;
+    tm1637_.setBrightness(brightness_, true);
+    updateScreen();
+}
+void Display::off()
+{
+    on_ = false;
+    tm1637_.setBrightness(brightness_, false);
+    updateScreen();
+}
+
+void Display::startBlinking()
+{
+    previousBlinkTime_ = millis();
+    on();
+}
+void Display::updateBlink()
+{
+    if (millis() - previousBlinkTime_ >= blinkInterval_) {
+        // Update the stored time
+        previousBlinkTime_ = millis();
+        // Alternate the screen on/off
+        onOffSwitch();
+    }
+}
+void Display::stopBlinking()
+{
+    on();
+}
+
 int Display::correctHoursRange(int hour)
 {
     return (((hour-1) % 24 + 24) % 24) + 1;
@@ -70,4 +104,13 @@ int Display::correctMinutesRange(int minute)
 
 void Display::updateScreen() {
     tm1637_.showNumberDecEx(hour_*100 + minute_, 0b01000000);
+}
+
+void Display::onOffSwitch()
+{
+    if (on_) {
+        off();
+    } else {
+        on();
+    }
 }
