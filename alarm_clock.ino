@@ -2,18 +2,19 @@
 #include "Display.h"
 #include "Button.h"
 #include "RealTimeClock.h"
-
-
-const int ledPin =  13;
+#include "Light.h"
 
 const int displayClkPin = 2;
 const int displayDioPin = 3;
 const int buttonUpPin = 4;
 const int buttonDownPin = 5;
 const int buttonSetTimePin = 6;
+const int ledPin =  8;
+
 
 Display display(displayClkPin, displayDioPin);
 RealTimeClock rtc;
+Light light(ledPin);
 
 Button buttonUp(buttonUpPin);
 Button buttonDown(buttonDownPin);
@@ -24,9 +25,9 @@ void setup()
     while (!Serial); // for Leonardo/Micro/Zero
     Serial.begin(115200);
     Serial.println("Setup");
-    pinMode(ledPin, OUTPUT);
 
     rtc.setup();
+    light.setup();
 
 }
 
@@ -35,6 +36,15 @@ void loop()
     Serial.println("loop begin");
     //delay(1000);
 
+    light.fadeOn(255, 0, 0);
+    delay(200);
+    light.fadeOff();
+    light.fadeOn(0, 255, 0);
+    light.fadeOff();
+    delay(200);
+    light.fadeOn(0, 0, 255);
+    light.fadeOff();
+    delay(200);
 
     display.setTime(rtc.getHoursMinutes());
 
