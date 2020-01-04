@@ -56,7 +56,7 @@ void Display::decrementMinutes()
 
 int Display::correctHoursRange(int hour)
 {
-    return (((hour-1) % 12 + 12) % 12) + 1;
+    return (((hour-1) % 24 + 24) % 24) + 1;
 }
 int Display::correctMinutesRange(int minute)
 {
